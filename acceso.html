@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LOCKLIMPIADAS IV</title>
+	<title>Gymkhana Ratones y Gatos - Acceso</title>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 	<style>
 		* {
@@ -11,15 +11,10 @@
 		  margin: 0;
 		  padding: 0;
 		}
-		
-		:root {
-		  --color-intenso: #DC3545;
-		  --color-suave: #FFE28C;
-		}		
 
 		body {
 		  font-family: 'Roboto', sans-serif;
-		  background: linear-gradient(to right, #DC3545, #FFC907);
+		  background: linear-gradient(to right, #FF7F27, #22B14C);
 		  min-height: 100vh;
 		  display: flex;
 		  justify-content: center;
@@ -38,7 +33,7 @@
 		}
 
 		.marco h1 {
-		  color: #DC3545;
+		  color: #FF7F27;
 		  font-size: 2rem;
 		  margin-bottom: 1.5rem;
 		}
@@ -54,50 +49,10 @@
 		}
 
 		.marco input:focus {
-		  border-color: #DC3545;
+		  border-color: #FFF200;
 		  outline: none;
 		}
 
-		.bi { /*Bloque intenso*/
-		  background: var(--color-intenso);
-		  color: white;
-		  padding: 1rem;
-		  border-radius: 0.8rem;
-		  margin-bottom: 1.5rem;
-		  font-size: 1.5rem;
-		}
-
-		.bs {/*Bloque suave*/
-		  padding: 1rem;
-		  border-radius: 0.8rem;
-		  margin-bottom: 1rem;
-		  text-align: center;
-		  background: var(--color-suave);
-		  border-left: 5px solid var(--color-intenso);
-		  border-right: 5px solid var(--color-intenso);
-		  font-size: 1.2rem;
-		  font-weight: 700;
-		  line-height: 1.5;
-		}
-		
-		.bg { /*Bloque gris*/
-		  background: #f5f5f5;
-		  border-radius: 0.6rem;
-		  padding: 0.6rem;
-		  margin-bottom: 1.5rem;
-		  font-size: 0.9rem;
-		}	
-
-		.tm{ /*Texto intenso*/
-		  margin-bottom: 1rem;
-		  font-weight: 700;
-		  color: var(--color-intenso);
-		}
-
-		
-		.t { /* Texto normal */
-		}
-		
 		.marco button {
 		  width: 100%;
 		  padding: 0.8rem 0;
@@ -105,14 +60,14 @@
 		  font-weight: 700;
 		  border: none;
 		  border-radius: 0.5rem;
-		  background: #DC3545;
+		  background: #22B14C;
 		  color: #fff;
 		  cursor: pointer;
 		  transition: background 0.3s;
 		}
 
 		.marco button:hover {
-		  background: #DC3545;
+		  background: #FFF200;
 		}
 
 		/* Media queries para móviles muy pequeños */
@@ -155,14 +110,14 @@
 		}
 
 		.modal-box h2 {
-		  color: #DC3545;
+		  color: #FFF200;
 		  margin-bottom: 1rem;
 		}
 
 		.modal-box button {
 		  margin-top: 1rem;
 		  padding: 0.6rem 1.2rem;
-		  background: #DC3545;
+		  background: #FFF200;
 		  color: white;
 		  border: none;
 		  border-radius: 0.5rem;
@@ -176,10 +131,10 @@
 
 	<!-- DISEÑO FORM BASE -->
 	<div class="marco">
-		<h1>LOCKLIMPIADAS (IV)</h1> 
-		<div class="bs">UNLOCK:<br>Asesinato en Birmingham</div>
-		<input type="text" id="carta" name="carta" placeholder="Carta" required>
-		<button onclick="buscar()">Buscar</button>
+		<h1>Acceso</h1> 
+		<input type="text" id="jugador" name="jugador" placeholder="Jugador" required>
+		<input type="password" id="clave" name="clave" placeholder="Código" required>
+		<button onclick="entrar()">Entrar</button>
 	</div>
 
 	<!-- DISEÑO MODAL -->
@@ -193,25 +148,43 @@
 
 
 	<script> 
-		async function buscar() {
+		//ENTRAR
+		async function entrar() {
 		
-			const carta = document.getElementById('carta').value + ".png";
+			const jugador = document.getElementById('jugador').value;
+			const clave = document.getElementById('clave').value;
+
+			console.log(jugador)
+			console.log(clave)
 			
-			window.open(carta, "_blank");
+			const res = await fetch("https://script.google.com/macros/s/AKfycbxG0-TddGcYraqw7FaVklnnSTw6Z-GMh0D7FX5F7WEsHbztk6i118RLJbj0SXA3RYb0vA/exec", {
+				method: "POST",
+				body: new URLSearchParams({
+					func: "entrar",
+					jugador: jugador,
+					clave: clave
+				})
+			});
+			const data = await res.json();
 			
-			////COMPROBAMOS SI LA CARTA EXISTE
-			//fetch(carta, { method: "HEAD" })
-			//.then(response => {
-			//	if (response.ok) {
-			//		window.open(carta, "_blank");
-			//	} else {
-			//		mostrarModal("Esa carta no existe.");
-			//	}
-			//})
-			//.catch(error => {
-			//	console.error(error);
-			//	mostrarModal("No se ha podido comprobar si existe esa carta.");
-			//});
+			if (data.jugador === '') {
+				mostrarModal("Credenciales incorrectas");
+			} 
+			else {
+				sessionStorage.setItem("jugador", data.jugador);
+				sessionStorage.setItem("equipo", data.equipo);
+				
+				if (data.rol === "RATON") {
+					window.location.href = "raton.html";
+				}
+				else if (data.rol === "GATO") {
+					window.location.href = "gato.html";
+				}
+				else {
+					mostrarModal("Espera a que se te asigne un equipo.");
+				}
+				
+			}
 		}
 		
 		
