@@ -35,6 +35,7 @@
 		  border-radius: 1rem;
 		  box-shadow: 0 1rem 2rem rgba(0,0,0,0.2);
 		  text-align: center;
+		  margin-bottom: 2rem;   /* Espacio inferior */
 		}
 
 		.marco h1 {
@@ -88,7 +89,7 @@
 		  font-size: 0.9rem;
 		}	
 
-		.tm{ /*Texto intenso*/
+		.ti{ /*Texto intenso*/
 		  margin-bottom: 1rem;
 		  font-weight: 700;
 		  color: var(--color-intenso);
@@ -115,6 +116,12 @@
 		  background: #DC3545;
 		}
 
+		img {
+		  max-width: 100%;
+		  height: auto;
+		  display: block;
+		}
+		
 		/* Media queries para móviles muy pequeños */
 		@media (max-width: 350px) {
 		  .marco {
@@ -175,11 +182,16 @@
 <body>
 
 	<!-- DISEÑO FORM BASE -->
-	<div class="marco">
-		<h1>LOCKLIMPIADAS (IV)</h1> 
-		<div class="bs">UNLOCK:<br>Asesinato en Birmingham</div>
-		<input type="text" id="carta" name="carta" placeholder="Carta" required>
-		<button onclick="buscar()">Buscar</button>
+	<div>
+		<div class="marco">
+			<h1>LOCKLIMPIADAS (IV)</h1> 
+			<div class="bs">UNLOCK:<br>Asesinato en Birmingham</div>
+			<input type="text" id="carta" name="carta" placeholder="Carta" required>
+			<button onclick="buscar()">Buscar</button>
+		</div>
+		<div class="marco">
+			<img id="img_intro" src = "0.png">
+		</div>
 	</div>
 
 	<!-- DISEÑO MODAL -->
